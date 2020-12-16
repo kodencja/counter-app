@@ -11,6 +11,15 @@
 # production
 /build
 
+#copies
+/src/components_1
+/src/index1.js
+/debug.log
+.eslintcache
+/src/App1.js
+/src/App1.css
+.README.md
+
 # misc
 .DS_Store
 .env.local
