@@ -3,6 +3,7 @@ import './App.css';
 import NavBar from './components/navbar';
 import Counters from './components/counters';
 import Response from './components/response';
+import DialogBox from './components/dialogbox';
 
 class App extends Component {
   state = {
@@ -10,27 +11,102 @@ class App extends Component {
       { id: 1, value: 0, name: "Coffe machine DeLonghi S 22.110.B", price: 200},
       { id: 2, value: 1, name: "Earl Grey Tea, 100 Tea Bags", price: 10},
       { id: 3, value: 0, name: "Every Day Tea, 100 Tea Bags", price: 12},
-      { id: 4, value: 0, name: "Bordeaux 2018", price: 20}
+      { id: 4, value: 0, name: "Bordeaux 2018", price: 20, adult: false}
     ],
+    active: false,
+    buttons: null
+  };
+
+   selectButtons = async ()=>{
+    try{
+      const buttons = document.querySelectorAll("button:not(.btn-alert)");
+      const buttonsTab = [...buttons];
+      this.setState({buttons: buttonsTab});
+    } catch(err){
+      console.log(err);
+    }
+
+  }
+
+  callBtns = async (flag)=>{
+    // console.log(flag);
+    if(this.state.buttons === null) await this.selectButtons();
+    flag ? await this.unableButtons() : await this.disableButtons();
+  }
+
+  disableButtons = async() =>{
+    this.state.buttons.forEach(el => {
+      el.setAttribute('disabled', 'disabled');
+    });
+  }
+
+  unSelectBtns = async ()=>{
+    this.setState({buttons: null})
+  }
+
+  unableButtons = async () =>{
+    await this.state.buttons.forEach(el => {
+      el.removeAttribute('disabled');
+    });
+    await this.unSelectBtns();
+  }
+
+  closeBox = async () => {
+    await this.callBtns(this.state.active);
+    const activeVal = this.state.active;
+    this.setState({ active: !activeVal });
   };
 
   handleReset = () => {
     const counters = this.state.counters.map((c) => {
       c.value = 0;
+      if(c.hasOwnProperty("adult")) c.adult = false;
       return c;
     });
     this.setState({ counters });
   };
 
-  handleIncrement = (counter) => {
+
+  showOrHideClass =() => {
+    return this.state.active ? "d-block" : "d-none";
+  }
+
+  handleBoxAnswer = (e) => {
+   return(this.state.counters.map((countElem) => {
+      if (countElem.hasOwnProperty("adult")) {
+        this.handleAdultAnswer(countElem, e);
+      }
+      return 0;
+    }) );
+  };
+
+  handleAdultAnswer = async (countElem, e)=>{
     const counters = [...this.state.counters];
-    const ind = counters.indexOf(counter);
-    counters[ind] = { ...counter };
-    if(counters[ind].value <10){
-      counters[ind].value++;
-      this.setState({ counters: counters });
+      const ind = counters.indexOf(countElem);
+      if(e.target.id === "no" && counters[ind].adult === true) {
+        counters[ind].adult = false;
+        this.setState({counters});
+      } else if (e.target.id === "yes" && counters[ind].adult === false){
+        counters[ind].adult = true;
+        this.setState({counters});
+      }
+      await this.callBtns(this.state.active);
+      await this.closeBox();
+  }
+
+
+  handleIncrement = (counter) => {
+    if(counter.hasOwnProperty("adult") && counter.adult === false){
+      this.callBtns(this.state.active);
+      this.setState({active: true});
     } else {
-      return
+      const counters = [...this.state.counters];
+      const ind = counters.indexOf(counter);
+      counters[ind] = { ...counter };
+      if(counters[ind].value <10){
+        counters[ind].value++;
+        this.setState({ counters: counters });
+      } 
     }
   };
 
@@ -87,6 +163,13 @@ class App extends Component {
     return this.state.counters.filter( c => c.value>0).length;
   }
 
+handleDisbale =(e)=>{
+  console.log(e.target.className);
+  return false;
+}
+
+
+
   render () {
 
   return (
@@ -96,14 +179,17 @@ class App extends Component {
     onPrice={this.handlePrice()}
     totalCounters={this.state.counters.filter(c => c.value >0).length}
     />
-    <main className="m-0 main">
+    <main className="m-0 main disable">
       <Counters 
       kounters={this.state.counters} 
       onReset={this.handleReset} 
       onIncrement={this.handleIncrement} 
       onDelete={this.handleDelete} 
       onMinus={this.handleMinus}
-      />
+      onDisable={this.handleDisbale}
+      >
+        <DialogBox countElement={this.state.counters} onAdultNo={this.handleAdultNo} onShowOrHideClass={this.showOrHideClass} onCloseBox={this.closeBox} onBoxAnswer={this.handleBoxAnswer}  />
+      </Counters>
     </main>
     <Response onTooMuchFormat={this.tooMuchFormat()} onWholesale={this.handleWholesale()} onZero={this.handleZero()} />
     </React.Fragment>

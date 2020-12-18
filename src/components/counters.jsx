@@ -24,8 +24,10 @@ class Counters extends Component {
             onDelete={onDelete}
             onMinus={onMinus}
             onIncrement={onIncrement}
+            onDisable={this.props.onDisable}
           ></Counter>
         ))}
+        {this.props.children}
       </div>
     );
   }

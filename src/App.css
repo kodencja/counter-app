@@ -3,6 +3,7 @@
 }
 
 .main{
+  position: relative;
   background-color: palegoldenrod;
   width: 100%;
   margin: 0 !important ;
@@ -126,4 +127,31 @@ border-radius: 5px;
 .fCol2 {
   background-color: white;
   color: navy;
+}
+
+.dialog-box {
+  color: black;
+  background-color: ghostwhite;
+  position: absolute;
+  z-index: 100;
+  left: 50%;
+  top: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+}
+
+.confirm-age {
+  color: darkblue;
+}
+
+.over18{
+  color: darkred;
+}
+
+
+.btn-close{
+  margin-right: -130%;
+  margin-top: -15%;
+  font-size: 0.8em !important;
 }

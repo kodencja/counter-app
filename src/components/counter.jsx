@@ -22,15 +22,15 @@ class Counter extends Component {
         </div>
         <button
           onClick={() => this.props.onIncrement(this.props.counter)}
-          className="btn btn-success btn-sm mt-2 my-sm-0 ml-sm-3 col-sm-1"
+          className="btn btn-success btn-sm mt-2 my-sm-0 ml-sm-3 col-sm-1 plus"
         >
-          <span className="plus">+</span>
+          +
         </button>
         <button
           onClick={() => this.props.onMinus(this.props.counter)}
-          className="btn btn-dark btn-sm my-1 mx-sm-1 col-sm-1"
+          className="btn btn-dark btn-sm my-1 mx-sm-1 col-sm-1 minus"
         >
-          <span className="minus">-</span>
+          -
         </button>
         <button
           onClick={() => this.props.onDelete(this.props.counter.id)}
