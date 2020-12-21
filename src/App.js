@@ -17,44 +17,87 @@ class App extends Component {
     buttons: null
   };
 
-   selectButtons = async ()=>{
-    try{
-      const buttons = document.querySelectorAll("button:not(.btn-alert)");
-      const buttonsTab = [...buttons];
-      this.setState({buttons: buttonsTab});
-    } catch(err){
-      console.log(err);
-    }
-
+  selectButtons = ()=>{
+    // console.log('3 selectButtons');
+    return new Promise((resolve, reject)=>{
+        const buttons = document.querySelectorAll("button:not(.btn-alert)");
+        const buttonsTab = [...buttons];
+        if(buttonsTab != null){
+          resolve( this.setState({buttons: buttonsTab}) );
+        } else {
+          reject(new Error('Error to catch buttons .btn-alert'));
+        }
+    })
   }
 
-  callBtns = async (flag)=>{
-    // console.log(flag);
-    if(this.state.buttons === null) await this.selectButtons();
-    flag ? await this.unableButtons() : await this.disableButtons();
-  }
-
-  disableButtons = async() =>{
-    this.state.buttons.forEach(el => {
-      el.setAttribute('disabled', 'disabled');
-    });
-  }
-
-  unSelectBtns = async ()=>{
+  unSelectBtns = ()=>{
+    // console.log('9 unSelectBtns');
     this.setState({buttons: null})
   }
 
-  unableButtons = async () =>{
-    await this.state.buttons.forEach(el => {
-      el.removeAttribute('disabled');
+  unableButtons = () =>{
+    // console.log('7 unableButtons');
+    return new Promise( (resolve,reject)=>{
+      resolve( this.state.buttons.forEach(el => {
+       el.removeAttribute('disabled');
+      }));
     });
-    await this.unSelectBtns();
+  }
+
+  disableButtons = () =>{
+    // console.log('7d disableButtons');
+    return new Promise((resolve, reject)=>{
+      resolve( this.state.buttons.forEach(el => {
+        el.setAttribute('disabled', 'disabled');
+      }) );
+    })
+  }
+
+  callBtnUnOrDisable = (flag)=>{
+    // console.log('5 callBtnUnOrDisable');
+    return new Promise( async(resolve, reject)=>{
+      if(flag){
+        // console.log('6 callBtnUnable');
+        resolve( await this.unableButtons(),
+        // console.log('8 callBtnUnable'),
+        this.unSelectBtns()
+        )
+      } else{
+        // console.log('6d callBtnDisable');
+        resolve( await this.disableButtons() );
+      }
+    })
+
+  }
+
+  callBtns =  (flag)=>{
+    try{
+      // console.log('2 callBtns');
+      return new Promise(async (resolve, reject)=>{
+        if(this.state.buttons === null) {
+          // console.log('2,5 callBtns');
+          await this.selectButtons();
+        }
+        // console.log('4 callBtns');
+        resolve( await this.callBtnUnOrDisable(flag) );
+      })
+    } catch(err){
+      console.log(new Error(err));
+    }
   }
 
   closeBox = async () => {
-    await this.callBtns(this.state.active);
-    const activeVal = this.state.active;
-    this.setState({ active: !activeVal });
+    try{
+      // console.log('start closeBox');
+      await this.callBtns(this.state.active);
+  
+      // console.log('last closeBox');
+      const activeVal = this.state.active;
+      this.setState({ active: !activeVal });
+    } catch(err){
+      console.log(new Error(err));
+    }
+
   };
 
   handleReset = () => {
@@ -90,13 +133,14 @@ class App extends Component {
         counters[ind].adult = true;
         this.setState({counters});
       }
-      await this.callBtns(this.state.active);
+      // console.log('handleAdultAnswer check');
       await this.closeBox();
   }
 
 
   handleIncrement = (counter) => {
     if(counter.hasOwnProperty("adult") && counter.adult === false){
+      // console.log('handleIncrement check');
       this.callBtns(this.state.active);
       this.setState({active: true});
     } else {
@@ -167,8 +211,6 @@ handleDisbale =(e)=>{
   console.log(e.target.className);
   return false;
 }
-
-
 
   render () {
 
