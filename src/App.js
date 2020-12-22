@@ -35,8 +35,8 @@ class App extends Component {
     this.setState({buttons: null})
   }
 
-  unableButtons = () =>{
-    // console.log('7 unableButtons');
+  enableButtons = () =>{
+    // console.log('7 enableButtons');
     return new Promise( (resolve,reject)=>{
       resolve( this.state.buttons.forEach(el => {
        el.removeAttribute('disabled');
@@ -57,9 +57,9 @@ class App extends Component {
     // console.log('5 callBtnUnOrDisable');
     return new Promise( async(resolve, reject)=>{
       if(flag){
-        // console.log('6 callBtnUnable');
-        resolve( await this.unableButtons(),
-        // console.log('8 callBtnUnable'),
+        // console.log('6 callBtnEnable');
+        resolve( await this.enableButtons(),
+        // console.log('8 callBtnEnable'),
         this.unSelectBtns()
         )
       } else{
