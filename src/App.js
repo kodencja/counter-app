@@ -13,91 +13,18 @@ class App extends Component {
       { id: 3, value: 0, name: "Every Day Tea, 100 Tea Bags", price: 12},
       { id: 4, value: 0, name: "Bordeaux 2018", price: 20, adult: false}
     ],
-    active: false,
-    buttons: null
+    dialogBoxVisible: false,
+    disabled: false
   };
 
-  selectButtons = ()=>{
-    // console.log('3 selectButtons');
-    return new Promise((resolve, reject)=>{
-        const buttons = document.querySelectorAll("button:not(.btn-alert)");
-        const buttonsTab = [...buttons];
-        if(buttonsTab != null){
-          resolve( this.setState({buttons: buttonsTab}) );
-        } else {
-          reject(new Error('Error to catch buttons .btn-alert'));
-        }
-    })
-  }
-
-  unSelectBtns = ()=>{
-    // console.log('9 unSelectBtns');
-    this.setState({buttons: null})
-  }
-
-  enableButtons = () =>{
-    // console.log('7 enableButtons');
-    return new Promise( (resolve,reject)=>{
-      resolve( this.state.buttons.forEach(el => {
-       el.removeAttribute('disabled');
-      }));
-    });
-  }
-
   disableButtons = () =>{
-    // console.log('7d disableButtons');
-    return new Promise((resolve, reject)=>{
-      resolve( this.state.buttons.forEach(el => {
-        el.setAttribute('disabled', 'disabled');
-      }) );
-    })
+    this.setState({disabled: true});
   }
 
-  callBtnUnOrDisable = (flag)=>{
-    // console.log('5 callBtnUnOrDisable');
-    return new Promise( async(resolve, reject)=>{
-      if(flag){
-        // console.log('6 callBtnEnable');
-        resolve( await this.enableButtons(),
-        // console.log('8 callBtnEnable'),
-        this.unSelectBtns()
-        )
-      } else{
-        // console.log('6d callBtnDisable');
-        resolve( await this.disableButtons() );
-      }
-    })
-
-  }
-
-  callBtns =  (flag)=>{
-    try{
-      // console.log('2 callBtns');
-      return new Promise(async (resolve, reject)=>{
-        if(this.state.buttons === null) {
-          // console.log('2,5 callBtns');
-          await this.selectButtons();
-        }
-        // console.log('4 callBtns');
-        resolve( await this.callBtnUnOrDisable(flag) );
-      })
-    } catch(err){
-      console.log(new Error(err));
-    }
-  }
-
-  closeBox = async () => {
-    try{
-      // console.log('start closeBox');
-      await this.callBtns(this.state.active);
-  
-      // console.log('last closeBox');
-      const activeVal = this.state.active;
-      this.setState({ active: !activeVal });
-    } catch(err){
-      console.log(new Error(err));
-    }
-
+  closeBox = () => {
+      const dialogBoxVisible = false;
+      const disabled = false;
+      this.setState({ dialogBoxVisible, disabled });
   };
 
   handleReset = () => {
@@ -109,9 +36,8 @@ class App extends Component {
     this.setState({ counters });
   };
 
-
   showOrHideClass =() => {
-    return this.state.active ? "d-block" : "d-none";
+    return this.state.dialogBoxVisible ? "d-block" : "d-none";
   }
 
   handleBoxAnswer = (e) => {
@@ -123,7 +49,7 @@ class App extends Component {
     }) );
   };
 
-  handleAdultAnswer = async (countElem, e)=>{
+  handleAdultAnswer = (countElem, e)=>{
     const counters = [...this.state.counters];
       const ind = counters.indexOf(countElem);
       if(e.target.id === "no" && counters[ind].adult === true) {
@@ -133,16 +59,14 @@ class App extends Component {
         counters[ind].adult = true;
         this.setState({counters});
       }
-      // console.log('handleAdultAnswer check');
-      await this.closeBox();
+      this.closeBox();
   }
 
 
   handleIncrement = (counter) => {
     if(counter.hasOwnProperty("adult") && counter.adult === false){
-      // console.log('handleIncrement check');
-      this.callBtns(this.state.active);
-      this.setState({active: true});
+      this.disableButtons();
+      this.setState({dialogBoxVisible: true});
     } else {
       const counters = [...this.state.counters];
       const ind = counters.indexOf(counter);
@@ -207,30 +131,28 @@ class App extends Component {
     return this.state.counters.filter( c => c.value>0).length;
   }
 
-handleDisbale =(e)=>{
-  console.log(e.target.className);
-  return false;
-}
 
   render () {
+
+    const { counters, disabled } = this.state;
 
   return (
     <React.Fragment>
     <NavBar 
     onSumup={this.handleSumup()}
     onPrice={this.handlePrice()}
-    totalCounters={this.state.counters.filter(c => c.value >0).length}
+    totalCounters={counters.filter(c => c.value >0).length}
     />
     <main className="m-0 main disable">
       <Counters 
-      kounters={this.state.counters} 
+      kounters={counters} 
       onReset={this.handleReset} 
       onIncrement={this.handleIncrement} 
       onDelete={this.handleDelete} 
       onMinus={this.handleMinus}
-      onDisable={this.handleDisbale}
+      onDisabled={disabled}
       >
-        <DialogBox countElement={this.state.counters} onAdultNo={this.handleAdultNo} onShowOrHideClass={this.showOrHideClass} onCloseBox={this.closeBox} onBoxAnswer={this.handleBoxAnswer}  />
+        <DialogBox countElement={counters} onShowOrHideClass={this.showOrHideClass} onCloseBox={this.closeBox} onBoxAnswer={this.handleBoxAnswer}  />
       </Counters>
     </main>
     <Response onTooMuchFormat={this.tooMuchFormat()} onWholesale={this.handleWholesale()} onZero={this.handleZero()} />

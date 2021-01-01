@@ -5,13 +5,21 @@ class Counters extends Component {
   render() {
     // destructuring arguments
 
-    const { onReset, onDelete, onIncrement, kounters, onMinus } = this.props;
+    const {
+      onReset,
+      onDelete,
+      onIncrement,
+      kounters,
+      onMinus,
+      onDisabled,
+    } = this.props;
 
     return (
       <div className="">
         <button
           onClick={onReset}
           className="btn btn-info text-center btn-sm m-2"
+          disabled={onDisabled}
         >
           Reset
         </button>
@@ -24,7 +32,7 @@ class Counters extends Component {
             onDelete={onDelete}
             onMinus={onMinus}
             onIncrement={onIncrement}
-            onDisable={this.props.onDisable}
+            onDisable={onDisabled}
           ></Counter>
         ))}
         {this.props.children}

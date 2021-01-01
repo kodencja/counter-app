@@ -2,6 +2,9 @@ import React, { Component } from "react";
 
 class Counter extends Component {
   render() {
+    const { id, name, price } = this.props.counter;
+    const { counter, onDisable } = this.props;
+
     return (
       <div className="mx-1 mt-2 row pr-2">
         <div className="sm-caps bgr1 mr-1 prodW mb-2 mb-sm-0 mx-auto mx-sm-1">
@@ -9,32 +12,35 @@ class Counter extends Component {
         </div>
         <div className="mx-1 mr-3 fCol1 prodName text-center col-sm-3 col-md-3">
           {" "}
-          {this.props.counter.name}
+          {name}
         </div>
         <div className="sm-caps bgr1 text-center mr-1 mt-3 mb-2 mt-sm-0 mb-sm-0">
           Price:
         </div>
         <div className="mr-3 fCol2 price priceW pt-1 px-1 mt-3 mb-2 mt-sm-0 mb-sm-0">
-          ${this.props.counter.price}
+          ${price}
         </div>
         <div className={this.getBadgeClasses()}>
           <span className="badg-no-text p-1">{this.formatCount()}</span>
         </div>
         <button
-          onClick={() => this.props.onIncrement(this.props.counter)}
+          onClick={() => this.props.onIncrement(counter)}
           className="btn btn-success btn-sm mt-2 my-sm-0 ml-sm-3 col-sm-1 plus"
+          disabled={onDisable}
         >
           +
         </button>
         <button
-          onClick={() => this.props.onMinus(this.props.counter)}
+          onClick={() => this.props.onMinus(counter)}
           className="btn btn-dark btn-sm my-1 mx-sm-1 col-sm-1 minus"
+          disabled={onDisable}
         >
           -
         </button>
         <button
-          onClick={() => this.props.onDelete(this.props.counter.id)}
+          onClick={() => this.props.onDelete(id)}
           className="btn btn-danger btn-sm ml-md-3 my-1 mb-3 mb-sm-0 col-sm-2 col-md-1"
+          disabled={onDisable}
         >
           Del
         </button>

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 class DialogBox extends Component {
   render() {
+    const { onCloseBox, onBoxAnswer } = this.props;
+
     return (
       <div
         className={
@@ -11,7 +13,7 @@ class DialogBox extends Component {
       >
         <button
           className="btn btn-sm btn-basic btn-alert border-dark btn-close font-weight-bold"
-          onClick={this.props.onCloseBox}
+          onClick={onCloseBox}
         >
           X
         </button>
@@ -23,14 +25,14 @@ class DialogBox extends Component {
         <button
           className="btn btn-primary btn-alert mr-5 mt-3"
           id="yes"
-          onClick={this.props.onBoxAnswer}
+          onClick={onBoxAnswer}
         >
           YES
         </button>
         <button
           className="btn btn-danger btn-alert mt-3"
           id="no"
-          onClick={this.props.onBoxAnswer}
+          onClick={onBoxAnswer}
         >
           NO
         </button>

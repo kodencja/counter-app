@@ -121,12 +121,13 @@ border-radius: 5px;
 
 .fCol1 {
   background-color: white;
-  color: chocolate;
+  color: black;
 }
 
 .fCol2 {
   background-color: white;
-  color: navy;
+  /* color: navy; */
+  color: chocolate;
 }
 
 .dialog-box {
