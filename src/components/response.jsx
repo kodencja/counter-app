@@ -10,6 +10,7 @@ class Response extends Component {
   }
 
   render() {
+    console.log("Response render");
     return (
       <div className={this.getClasses()}>{this.props.onTooMuchFormat}</div>
     );

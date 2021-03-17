@@ -5,6 +5,7 @@ class Counters extends Component {
   render() {
     // destructuring arguments
 
+    console.log("Counters render");
     const {
       onReset,
       onDelete,
@@ -28,7 +29,6 @@ class Counters extends Component {
           <Counter
             key={counter.id}
             counter={counter}
-            product={counter}
             onDelete={onDelete}
             onMinus={onMinus}
             onIncrement={onIncrement}

@@ -4,6 +4,8 @@ class DialogBox extends Component {
   render() {
     const { onCloseBox, onBoxAnswer } = this.props;
 
+    console.log("DialogBox render");
+
     return (
       <div
         className={
@@ -42,3 +44,4 @@ class DialogBox extends Component {
 }
 
 export default DialogBox;
+// export default React.memo(DialogBox);

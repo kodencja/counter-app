@@ -2,6 +2,8 @@
 import React from "react";
 
 const NavBar = (props) => {
+  console.log("Navbar render");
+
   return (
     <nav className="navbar navbar-light bg-light">
       <a className="navbar-brand" href="#">
