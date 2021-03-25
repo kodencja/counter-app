@@ -140,7 +140,10 @@ border-radius: 5px;
 
 .dialog-box {
   color: black;
-  background-color: ghostwhite;
+  /* color: #ecf7f8; */
+  /* color: palevioletred; */
+  /* color: ghostwhite; */
+  /* background-color: whitesmoke !important; */
   position: absolute;
   z-index: 100;
   left: 50%;

@@ -1,57 +1,56 @@
-import React, { useContext, useMemo } from "react";
-// import { useContext } from "react/cjs/react.development";
+import React, {
+  useContext,
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { CountContext } from "../App";
 import CountUp, { useCountUp } from "react-countup";
 
-const NavbarH = (props) => {
+const NavbarH = () => {
   const counterContext = useContext(CountContext);
+  const [badgeClasses, setBadgeClasses] = useState(
+    "badge badge-pill  ml-1 badge-warning"
+  );
+
+  const priceContext = counterContext.totalPrice;
+
+  useEffect(() => {
+    getBadgeCl();
+  }, [priceContext]);
 
   console.log("Navbar render!");
-  // console.log(counterContext.prevWholePrice);
 
-  const handleSumupValues = () => {
+  const handleSumupValues = useMemo(() => {
+    console.log("handleSumupValues Fn");
     return counterContext.countState.reduce((countPrev, countNext) => {
       return countPrev + countNext.value;
     }, 0);
-  };
+  }, [counterContext.countState]);
 
-  // const handleTotalPrice = () => {
-  //   return counterContext.countState.reduce((c1, c2) => {
-  //     return c1 + c2.price * c2.value;
-  //   }, 0);
-  // };
-
-  const getBadgeClasses = () => {
+  // tu musi być useCallback bo ta funkcja nic nie zwraca tylko jest pośrednikiem czyli wywoluje funkcje które dopiero coś zwracają
+  const getBadgeCl = useCallback(() => {
+    console.log("getBadgeCl NavbarH");
     let classes = "badge badge-pill  ml-1 ";
-    classes += handleSumupValues() === 0 ? "badge-warning" : "badge-primary";
-    return classes;
-  };
-
-  // const handleTotalPrice = () => {
-  //   console.log("handleTotalPrice");
-  //   return new Promise((resolve, reject) => {
-  //     if (reject.length > 1) reject(new Error("Error to get total price!"));
-  //     else {
-  //       const totalPrice = counterContext.countState.reduce((c1, c2) => {
-  //         return c1 + c2.price * c2.value;
-  //       }, 0);
-  //       console.log(totalPrice);
-  //       resolve(totalPrice);
-  //     }
-  //   });
-  // };
-
-  // const totalPriceAsync = async () => {
-  //   console.log("totalPriceAsync Fn!");
-  //   const totalPrice = await handleTotalPrice();
-  //   console.log(totalPrice);
-  //   return totalPrice;
-  // };
+    classes += handleSumupValues === 0 ? "badge-warning" : "badge-primary";
+    if (counterContext.prevWholeValue - handleSumupValues <= 0) {
+      setBadgeClasses(classes);
+    } else {
+      return new Promise((resolve, reject) => {
+        if (reject.length > 1) reject(new Error("Error to get total price!"));
+        else {
+          setTimeout(() => {
+            setBadgeClasses(classes);
+            resolve(classes);
+          }, counterContext.durationTime * 550);
+        }
+      });
+    }
+  }, [counterContext.countState]);
 
   return (
     <nav className="navbar navbar-light bg-light">
-      {/* <button onClick={totalPriceAsync}>totalPriceAsync</button> */}
-      {/* <a className="navbar-brand" href="#"> */}
       <a className="navbar-brand" href="#">
         Number of
         <span className="font-weight-bold n1"> grades </span>to buy:{" "}
@@ -63,17 +62,15 @@ const NavbarH = (props) => {
         </span>
         <div className="w-100 my-1"></div>Number of
         <span className="font-weight-bold n2">{"  "} products </span>
-        to buy: {/* <span className="badge badge-pill badge-primary ml-1"> */}
-        <span className={getBadgeClasses()}>
-          {/* {handleSumupValues()} */}
+        to buy:
+        <span className={badgeClasses}>
           <CountUp
-            // end={handleSumupValues() > 0 ? handleSumupValues() : 0}
-            // start={handleSumupValues() > 1 ? handleSumupValues() : 0}
             start={counterContext.prevWholeValue}
-            end={handleSumupValues()}
-            // duration={2}
+            end={handleSumupValues}
             duration={
-              counterContext.prevWholeValue - handleSumupValues() <= 0 ? 0.5 : 2
+              counterContext.prevWholeValue - handleSumupValues <= 0
+                ? 0.3
+                : counterContext.durationTime
             }
           >
             {({ countUpRef }) => (
@@ -86,22 +83,14 @@ const NavbarH = (props) => {
         <div className="w-100 my-1"></div>
         <span className="font-weight-bold total-price n3">Total price: </span>
         <span className="badge badge-pill badge-success ml-1 py-2">
-          {/* ${handleTotalPrice()} */}
           <CountUp
-            // end={handleSumupValues() > 0 ? handleSumupValues() : 0}
-            // start={counterContext.prevWholePrice}
             start={counterContext.prevWholePrice}
-            // end={totalPriceAsync}
-            // end={async () => await handleTotalPrice()}
-            // end={handleTotalPrice()}
             end={
-              counterContext.totalPrice() <= 500
-                ? counterContext.totalPrice()
-                : counterContext.totalPrice() * 0.9
+              counterContext.totalPrice <= 500
+                ? counterContext.totalPrice
+                : counterContext.totalPrice * 0.9
             }
-            // onUpdate={()=> )}
-            // redraw={false}
-            duration={2}
+            duration={counterContext.durationTime}
             prefix="$"
             separator=","
           >
@@ -117,4 +106,4 @@ const NavbarH = (props) => {
   );
 };
 
-export default NavbarH;
+export default React.memo(NavbarH);

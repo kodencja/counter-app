@@ -12,7 +12,8 @@
 /build
 
 #copies
-/src/components
+/src/components_3
+/src/components_2
 /src/components_1
 /src/index1.js
 /debug.log
@@ -24,7 +25,7 @@ App1.js
 App2.js
 App3.js
 App4.js
-AppClass.js
+AppCl.js
 
 # misc
 .DS_Store

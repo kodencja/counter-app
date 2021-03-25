@@ -4,12 +4,10 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
-import AppClass from "./AppClass";
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
-    {/* <AppClass /> */}
   </React.StrictMode>,
   document.getElementById("root")
 );

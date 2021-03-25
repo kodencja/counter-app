@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useContext,
-  useReducer,
-} from "react";
+import React, { useState, useEffect, useRef, useReducer, useMemo } from "react";
 import "./App.css";
 import CountersH from "./componentHook/CountersH";
 import NavbarH from "./componentHook/NavbarH";
@@ -16,6 +10,8 @@ import Modal from "react-modal";
 Modal.setAppElement("#root");
 
 export const CountContext = React.createContext();
+export const ModalTipsContext = React.createContext();
+
 const initState = [
   { id: 1, value: 0, name: "Coffe machine DeLonghi S 22.110.B", price: 200 },
   { id: 2, value: 0, name: "Earl Grey Tea, 100 Tea Bags", price: 10 },
@@ -25,36 +21,12 @@ const initState = [
 
 const reducer = (state, action) => {
   const stateCopy = [...state];
-  let index, initStateCopy;
-  // console.log(typeof action.counterNo);
-  // if (typeof action.counterNo !== "undefined") {
-  if (typeof action.counterNo === "object") {
-    // console.log("not undefined");
-    index = state.indexOf(action.counterNo);
+  let index;
 
-    // robimy dodatkową kopię obiektu, którego 'value' chcemy zmienić, aby ten obiekt zyskał nową referencję a nie był zmieniany bezpośrednio z pominięciem funkcji 'dispatch', bo tego robić nie wolno
+  if (typeof action.counterNo === "object") {
+    index = state.indexOf(action.counterNo);
     stateCopy[index] = { ...action.counterNo };
-    // if(action.type === )
   }
-  // else {
-  //   if (action.counterNo === "adult") {
-  //   }
-  // if(typeof action.counterNo === "undefined") {
-  // console.log("undefined");
-  // console.log(initState);
-  // if(action.type)
-  // initStateCopy = [...initState];
-  // initStateCopy.map((counter) => {
-  //   counter.value = 0;
-  //   if (counter.hasOwnProperty("adult")) counter.adult = false;
-  //   return counter;
-  // });
-  // }
-  // else if(typeof action.counterNo === "string"){
-  // prevPrice = stateCopy.reduce((prevC, nextC)=>{
-  //   return prevC + nextC.price * nextC.value
-  // },0)
-  // }
 
   switch (action.type) {
     case "increment":
@@ -71,8 +43,6 @@ const reducer = (state, action) => {
       stateCopy[index].adult = true;
       stateCopy[index].value++;
       return stateCopy;
-    case "noAdult":
-      return state;
     case "reset":
       return initState;
     default:
@@ -80,9 +50,11 @@ const reducer = (state, action) => {
   }
 };
 
+const durationTime = 1.6;
+
 function App() {
+  const [check, setCheck] = useState(0);
   const [countObjects, dispatch] = useReducer(reducer, initState);
-  // const [adultProductId, setAdultProductId] = useState(1);
   const prevTotalPrice = useRef(
     countObjects.reduce((prevC, nextC) => {
       return prevC + nextC.price * nextC.value;
@@ -97,34 +69,17 @@ function App() {
   const [disable, setDisable] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  //   const [countObjects, setCountObjects] = useState([
-  //     { id: 1, value: 0, name: "Coffe machine DeLonghi S 22.110.B", price: 200 },
-  //     { id: 2, value: 1, name: "Earl Grey Tea, 100 Tea Bags", price: 10 },
-  //     { id: 3, value: 0, name: "Every Day Tea, 100 Tea Bags", price: 12 },
-  //     { id: 4, value: 0, name: "Bordeaux 2018", price: 20, adult: false },
-  //   ]);
-
+  // store the previous value of all prices and nubers of all products ("value")
   useEffect(() => {
-    // console.log(countObjects);
-    // console.log(prevTotalPrice.current);
-    // setPrevTotalPrice(
-    //   countObjects.reduce((prevC, nextC) => {
-    //     return prevC + nextC.price * nextC.value;
-    //   }, 0)
-    // );
     prevTotalPrice.current = countObjects.reduce((prevC, nextC) => {
       return prevC + nextC.price * nextC.value;
     }, 0);
     prevTotalValue.current = countObjects.reduce((prevC, nextC) => {
       return prevC + nextC.value;
     }, 0);
-    // console.log(prevTotalPrice);
-    // console.log(prevTotalValue.current);
   }, [countObjects]);
 
-  // const handleReducer=()=>{
-
-  // }
+  console.log("App render!");
 
   const notify = () => {
     console.log("notify");
@@ -139,44 +94,43 @@ function App() {
         transition: Slide,
       }
     );
-
-    // toast.error("Error! Check it once again!", {
-    //   position: toast.POSITION.TOP_CENTER,
-    //   autoClose: 4000,
-    // });
   };
 
-  const totalPrice = () => {
-    // console.log("totalPrice");
+  const totalPrice = useMemo(() => {
+    console.log("totalPrice Fn");
     return countObjects.reduce((c1, c2) => {
       return c1 + c2.price * c2.value;
     }, 0);
-  };
-
-  // const handleAdultAnswer =(counter, el)=>{
-  //   const counters = [...countObjects];
-  //   const index = counters.indexOf(counter);
-  //   counters[index] = {...counter};
-  // }
+  }, [countObjects]);
 
   const handleModalAnswer = (e) => {
+    console.log("handleModalAnswer Fn");
     setModalIsOpen(false);
-    return countObjects.forEach((counter) => {
-      if (counter.hasOwnProperty("adult")) {
-        if (e.target.id === "yes") {
+    if (e.target.id === "yes") {
+      return countObjects.forEach((counter) => {
+        if (counter.hasOwnProperty("adult")) {
           dispatch({ type: "yesAdult", counterNo: counter });
-        } else if (e.target.id === "no") {
-          dispatch({ type: "noAdult", counterNo: counter });
         }
-        // this.handleAdultAnswer(counter, e);
-      }
-    });
-
-    // if(answer === 'yes'){
-
-    //   set
-    // }
+      });
+    } else return false;
   };
+
+  const valueContextFrist = useMemo(() => {
+    return {
+      countState: countObjects,
+      countDispatch: dispatch,
+      prevWholePrice: prevTotalPrice.current,
+      prevWholeValue: prevTotalValue.current,
+      totalPrice,
+      durationTime,
+      disable,
+      setDisable,
+    };
+  }, [countObjects, disable]);
+
+  const valueContextModal = useMemo(() => {
+    return { toastNotify: notify, setModalIsOpen };
+  }, [countObjects]);
 
   return (
     <div className="App">
@@ -189,9 +143,8 @@ function App() {
           overlay: { backgroundColor: "rgba(169, 169, 180, 0.733)" },
           content: {
             color: "crimson",
-            backgroundColor: "#ecf7f8",
+            backgroundColor: "whitesmoke",
             padding: "50px",
-            // transform: "translate(-50%, -50%)",
           },
         }}
       >
@@ -207,7 +160,6 @@ function App() {
         <button
           className="btn btn-primary btn-alert mr-5 mt-3"
           id="yes"
-          // onClick={() => handleModalAnswer("yes")}
           onClick={handleModalAnswer}
         >
           YES
@@ -215,32 +167,20 @@ function App() {
         <button
           className="btn btn-danger btn-alert mt-3"
           id="no"
-          // onClick={() => handleModalAnswer("no")}
           onClick={handleModalAnswer}
         >
           NO
         </button>
-        {/* <button onClick={() => setModalIsOpen(false)}>Close modal</button> */}
       </Modal>
-      <CountContext.Provider
-        value={{
-          countState: countObjects,
-          countDispatch: dispatch,
-          prevWholePrice: prevTotalPrice.current,
-          prevWholeValue: prevTotalValue.current,
-          toastNotify: notify,
-          totalPrice,
-          disable,
-          setDisable,
-          setModalIsOpen,
-        }}
-      >
+      <div>{check}</div>
+      <button onClick={() => setCheck((prev) => prev + 1)}>set check no</button>
+      <CountContext.Provider value={valueContextFrist}>
         <NavbarH />
-        {/* <CountersH counterObj={countObjects} /> */}
-        <CountersH />
-        {/* <CountersH /> */}
-        <ToastContainer style={{ textAlign: "justify" }} limit={1} />
+        <ModalTipsContext.Provider value={valueContextModal}>
+          <CountersH />
+        </ModalTipsContext.Provider>
       </CountContext.Provider>
+      <ToastContainer style={{ textAlign: "justify" }} limit={1} />
     </div>
   );
 }
