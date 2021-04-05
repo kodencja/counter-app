@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { CountContext } from "../App";
 import Tippy from "@tippyjs/react";
 import Modal from "react-modal";

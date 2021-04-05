@@ -27,7 +27,6 @@ function CountersH() {
     </div>
   );
 
-  const [titleOffer, setTitleOffer] = useState("Today's special offer!");
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const counterRef = useRef([]);
@@ -57,10 +56,6 @@ function CountersH() {
   useEffect(() => {
     console.log("CountersH modalIsOpen render!");
   }, [modalIsOpen]);
-
-  useEffect(() => {
-    console.log("CountersH titleOffer render!");
-  }, [titleOffer]);
 
   // async function callTextOffer() {
   const callTextOffer = useCallback(async () => {
@@ -123,7 +118,7 @@ function CountersH() {
         }, counterContext.durationTime * 550);
       }
     });
-  }, [priceContext]);
+  }, [priceContext, counterContext.durationTime]);
 
   const callSetModal = (bool) => {
     setModalIsOpen(bool);

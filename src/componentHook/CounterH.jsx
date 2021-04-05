@@ -27,14 +27,14 @@ const CounterH = React.forwardRef((props, ref) => {
     // object destructuring
     const { value: count } = singleCounter;
     return count === 0 ? "Zero" : count;
-  }, [singleCounter.value]);
+  }, [singleCounter]);
 
   // handle change of value i.e. increment or decrement of the product number
   const handleValueChange = (txtType) => {
     // console.log("handleValueChange Fn");
     if (singleCounter.adult === true) {
       if (txtType === "increment") {
-        console.log("adult zone!");
+        // console.log("adult zone!");
         counterContext.setAdultCounterClicked(singleCounter);
         modalTipContext.setModalIsOpen(true);
       } else if (txtType === "decrement") {
