@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef, useReducer, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useReducer,
+  useMemo,
+  useCallback,
+} from "react";
 import "./App.css";
 import CountersH from "./componentHook/CountersH";
 import NavbarH from "./componentHook/NavbarH";
@@ -6,6 +13,8 @@ import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "tippy.js/dist/tippy.css";
 import Modal from "react-modal";
+import AddProd from "./componentHook/AddProd";
+import DevelopInfo from "./componentHook/DevelopInfo";
 
 Modal.setAppElement("#root");
 
@@ -13,19 +22,59 @@ export const CountContext = React.createContext();
 export const ModalTipsContext = React.createContext();
 
 const initState = [
-  { id: 1, value: 0, name: "Coffe machine DeLonghi S 22.110.B", price: 200 },
-  { id: 2, value: 0, name: "Earl Grey Tea, 100 Tea Bags", price: 10 },
-  { id: 3, value: 0, name: "Every Day Tea, 100 Tea Bags", price: 12 },
-  { id: 4, value: 0, name: "Bordeaux 2018", price: 20, adult: false },
+  {
+    id: 0,
+    value: 0,
+    name: "Coffe machine DeLonghi S 22.110.B",
+    unit: "piece",
+    price: 200,
+    adult: false,
+  },
+  {
+    id: 1,
+    value: 0,
+    name: "Earl Grey Tea, 100 Tea Bags",
+    unit: "box",
+    price: 10,
+    adult: false,
+  },
+  {
+    id: 2,
+    value: 0,
+    name: "Every Day Tea, 100 Tea Bags",
+    unit: "box",
+    price: 12,
+    adult: false,
+  },
+  {
+    id: 3,
+    value: 0,
+    name: "Bordeaux 2018",
+    unit: "bottle",
+    price: 20,
+    adult: true,
+  },
+  { id: 4, value: 0, name: "Beer Tuborg", unit: "can", price: 5, adult: true },
 ];
 
 const reducer = (state, action) => {
-  const stateCopy = [...state];
+  let stateCopy = [...state];
   let index;
-
-  if (typeof action.counterNo === "object") {
+  if (action.type !== "add" && action.type !== "delete") {
     index = state.indexOf(action.counterNo);
     stateCopy[index] = { ...action.counterNo };
+  } else if (action.type === "add") {
+    index = state.length;
+    stateCopy[index] = { id: index, value: 0, ...action.counterNo };
+  } else if (action.type === "delete") {
+    // this loop is necessary to avoid working on original state internal objects
+    for (let i = 0; i < stateCopy.length; i++) {
+      stateCopy[i] = { ...state[i] };
+    }
+    stateCopy = stateCopy.filter((obj) => obj.id !== action.counterNo.id);
+    for (let i = 0; i < stateCopy.length; i++) {
+      stateCopy[i].id = i;
+    }
   }
 
   switch (action.type) {
@@ -40,8 +89,14 @@ const reducer = (state, action) => {
         return stateCopy;
       }
     case "yesAdult":
-      stateCopy[index].adult = true;
-      stateCopy[index].value++;
+      stateCopy[index].adult = false;
+      if (stateCopy[index].id === action.adultCounter.id) {
+        stateCopy[index].value++;
+      }
+      return stateCopy;
+    case "add":
+      return stateCopy;
+    case "delete":
       return stateCopy;
     case "reset":
       return initState;
@@ -50,10 +105,10 @@ const reducer = (state, action) => {
   }
 };
 
+// time for setTimeout in promises
 const durationTime = 1.6;
 
 function App() {
-  const [check, setCheck] = useState(0);
   const [countObjects, dispatch] = useReducer(reducer, initState);
   const prevTotalPrice = useRef(
     countObjects.reduce((prevC, nextC) => {
@@ -66,8 +121,10 @@ function App() {
     }, 0)
   );
 
+  // variable for tipps to be "abled" or "disabled"
   const [disable, setDisable] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [adultCounterClicked, setAdultCounterClicked] = useState({});
 
   // store the previous value of all prices and nubers of all products ("value")
   useEffect(() => {
@@ -97,23 +154,33 @@ function App() {
   };
 
   const totalPrice = useMemo(() => {
-    console.log("totalPrice Fn");
+    // console.log("totalPrice Fn");
     return countObjects.reduce((c1, c2) => {
       return c1 + c2.price * c2.value;
     }, 0);
   }, [countObjects]);
 
   const handleModalAnswer = (e) => {
-    console.log("handleModalAnswer Fn");
     setModalIsOpen(false);
     if (e.target.id === "yes") {
-      return countObjects.forEach((counter) => {
-        if (counter.hasOwnProperty("adult")) {
-          dispatch({ type: "yesAdult", counterNo: counter });
+      countObjects.forEach((counter) => {
+        if (counter.adult === true) {
+          dispatch({
+            type: "yesAdult",
+            counterNo: counter,
+            adultCounter: adultCounterClicked,
+          });
         }
       });
     } else return false;
   };
+
+  const addProduct = useCallback(
+    (productObj) => {
+      dispatch({ type: "add", counterNo: productObj });
+    },
+    [countObjects]
+  );
 
   const valueContextFrist = useMemo(() => {
     return {
@@ -125,6 +192,7 @@ function App() {
       durationTime,
       disable,
       setDisable,
+      setAdultCounterClicked,
     };
   }, [countObjects, disable]);
 
@@ -148,15 +216,17 @@ function App() {
           },
         }}
       >
-        <button
-          className="btn btn-sm btn-basic btn-alert border-dark btn-close font-weight-bold"
-          onClick={() => setModalIsOpen(false)}
-        >
-          X
-        </button>
-        <h4 className="bg-warning mb-3">Adult Zone!</h4>
-        <h5 className="mb-4 confirm-age">Confirm your age!</h5>
-        <h4 className="dialog-question">Are you over 18?</h4>
+        <div className="btn-close">
+          <button
+            className="btn btn-sm btn-basic btn-alert border-dark font-weight-bold close-btn mx-2"
+            onClick={() => setModalIsOpen(false)}
+          >
+            X
+          </button>
+        </div>
+        <h4 className="bg-warning mb-3 p-1 h5">Adult Zone!</h4>
+        <h5 className="mb-4 confirm-age h6">Confirm your age!</h5>
+        <h4 className="dialog-question h5">Are you over 18?</h4>
         <button
           className="btn btn-primary btn-alert mr-5 mt-3"
           id="yes"
@@ -172,15 +242,18 @@ function App() {
           NO
         </button>
       </Modal>
-      <div>{check}</div>
-      <button onClick={() => setCheck((prev) => prev + 1)}>set check no</button>
       <CountContext.Provider value={valueContextFrist}>
         <NavbarH />
         <ModalTipsContext.Provider value={valueContextModal}>
           <CountersH />
         </ModalTipsContext.Provider>
+        <AddProd addPro={addProduct} />
+        <DevelopInfo />
       </CountContext.Provider>
       <ToastContainer style={{ textAlign: "justify" }} limit={1} />
+      <footer className="text-center mx-auto my-1 footer">
+        &copy; 2021 <i>by</i> codencja
+      </footer>
     </div>
   );
 }

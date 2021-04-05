@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import { CountContext } from "../App";
-import CountUp, { useCountUp } from "react-countup";
+import CountUp from "react-countup";
 
 const NavbarH = () => {
   const counterContext = useContext(CountContext);
@@ -23,15 +23,14 @@ const NavbarH = () => {
   console.log("Navbar render!");
 
   const handleSumupValues = useMemo(() => {
-    console.log("handleSumupValues Fn");
+    // console.log("handleSumupValues Fn");
     return counterContext.countState.reduce((countPrev, countNext) => {
       return countPrev + countNext.value;
     }, 0);
   }, [counterContext.countState]);
 
-  // tu musi być useCallback bo ta funkcja nic nie zwraca tylko jest pośrednikiem czyli wywoluje funkcje które dopiero coś zwracają
   const getBadgeCl = useCallback(() => {
-    console.log("getBadgeCl NavbarH");
+    // console.log("getBadgeCl NavbarH");
     let classes = "badge badge-pill  ml-1 ";
     classes += handleSumupValues === 0 ? "badge-warning" : "badge-primary";
     if (counterContext.prevWholeValue - handleSumupValues <= 0) {
@@ -50,57 +49,65 @@ const NavbarH = () => {
   }, [counterContext.countState]);
 
   return (
-    <nav className="navbar navbar-light bg-light">
-      <a className="navbar-brand" href="#">
-        Number of
-        <span className="font-weight-bold n1"> grades </span>to buy:{" "}
-        <span className="badge badge-pill badge-secondary ml-1 mr-3">
-          {
-            counterContext.countState.filter((counter) => counter.value > 0)
-              .length
-          }
-        </span>
-        <div className="w-100 my-1"></div>Number of
-        <span className="font-weight-bold n2">{"  "} products </span>
-        to buy:
-        <span className={badgeClasses}>
-          <CountUp
-            start={counterContext.prevWholeValue}
-            end={handleSumupValues}
-            duration={
-              counterContext.prevWholeValue - handleSumupValues <= 0
-                ? 0.3
-                : counterContext.durationTime
+    <nav className="navbar navbar-light bg-light ml-2">
+      <a className="navbar-brand" href="##">
+        <div className="row mb-2">
+          <div>Number of&nbsp;</div>
+          <span className="font-weight-bold n1">grades&nbsp;</span>to buy:{" "}
+          <span className="badge badge-pill badge-secondary ml-1 mr-0">
+            {
+              counterContext.countState.filter((counter) => counter.value > 0)
+                .length
             }
-          >
-            {({ countUpRef }) => (
-              <div>
-                <span ref={countUpRef}></span>
-              </div>
-            )}
-          </CountUp>
-        </span>
-        <div className="w-100 my-1"></div>
-        <span className="font-weight-bold total-price n3">Total price: </span>
-        <span className="badge badge-pill badge-success ml-1 py-2">
-          <CountUp
-            start={counterContext.prevWholePrice}
-            end={
-              counterContext.totalPrice <= 500
-                ? counterContext.totalPrice
-                : counterContext.totalPrice * 0.9
-            }
-            duration={counterContext.durationTime}
-            prefix="$"
-            separator=","
-          >
-            {({ countUpRef }) => (
-              <div>
-                <span ref={countUpRef}></span>
-              </div>
-            )}
-          </CountUp>
-        </span>
+          </span>
+        </div>
+        {/* <div className="w-100 my-1"></div> */}
+        <div className="row mb-2">
+          <span>Number of&nbsp;</span>
+          <span className="font-weight-bold n2">products&nbsp;</span>
+          to buy:
+          <span className={badgeClasses}>
+            <CountUp
+              start={counterContext.prevWholeValue}
+              end={handleSumupValues}
+              duration={
+                counterContext.prevWholeValue - handleSumupValues <= 0
+                  ? 0.3
+                  : counterContext.durationTime
+              }
+            >
+              {({ countUpRef }) => (
+                <div>
+                  <span ref={countUpRef}></span>
+                </div>
+              )}
+            </CountUp>
+          </span>
+        </div>
+
+        {/* <div className="w-100 my-1"></div> */}
+        <div className="row">
+          <span className="font-weight-bold n3">Total price: </span>
+          <span className="badge badge-pill badge-success ml-1 py-2">
+            <CountUp
+              start={counterContext.prevWholePrice}
+              end={
+                counterContext.totalPrice <= 500
+                  ? counterContext.totalPrice
+                  : counterContext.totalPrice * 0.9
+              }
+              duration={counterContext.durationTime}
+              prefix="$"
+              separator=","
+            >
+              {({ countUpRef }) => (
+                <div>
+                  <span ref={countUpRef}></span>
+                </div>
+              )}
+            </CountUp>
+          </span>
+        </div>
       </a>
     </nav>
   );
