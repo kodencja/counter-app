@@ -2,49 +2,54 @@
   font-size: 18px;
 }
 
-.main{
+.main {
   position: relative;
-  background-image: linear-gradient(0deg, rgb(224, 215, 133) 0%, palegoldenrod 40%, cornsilk 90%);
+  background-image: linear-gradient(
+    0deg,
+    rgb(224, 215, 133) 0%,
+    palegoldenrod 40%,
+    cornsilk 90%
+  );
   width: 100%;
   margin: 0 !important ;
 }
 
-.row{
+.container {
+  width: 100% !important;
+}
+
+.row {
   align-items: center;
 }
 
-.row:last-child{
+.row:last-child {
   padding-bottom: 20px;
 }
 
-.navbar-brand{
+.navbar-brand {
   font-size: 1em !important;
 }
 
-.badge-no-text{
-  font-size: 1em;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
+.badge-no-text {
+  font-size: 0.85em;
 }
 
-.bwarning{
-background-color: #ffc107;
-color: black;
-font-weight: 700;
-border-radius: 5px;
+.bwarning {
+  background-color: #ffc107;
+  color: black;
+  font-weight: 700;
+  border-radius: 5px;
 }
 
-.bprimary{
+.bprimary {
   background-color: #007bff;
   color: white;
   font-weight: 700;
   border-radius: 5px;
 }
 
-.plus, .minus{
+.plus,
+.minus {
   font-size: 1.5em;
   font-weight: bold;
 }
@@ -55,28 +60,28 @@ border-radius: 5px;
   color: forestgreen;
 }
 
-.respBgr0{
+.respBgr0 {
   background-color: #ffc107;
   color: black;
   font-weight: 500;
 }
-.respBgrWhSal{
+.respBgrWhSal {
   background-color: mediumseagreen;
   color: white;
   font-weight: 600;
 }
 
-.n1{
+.n1 {
   color: slategray;
 }
 
-.n2{
- color: #007bff; 
+.n2 {
+  color: #007bff;
 }
 
-.n3{
-  color: darkgoldenrod; 
- }
+.n3 {
+  color: darkgoldenrod;
+}
 
 .sm-caps {
   font-variant: small-caps;
@@ -86,22 +91,16 @@ border-radius: 5px;
   letter-spacing: 0.3px;
 }
 
-.prodW{
-  height: 30%;
-  text-align: center;
-  align-items: center;
-}
-
 .prodName {
   padding: 2px 5px;
   font-size: 1em;
   line-height: 1.2;
   font-weight: 700;
-  width: 8em;
+  /* width: 8em; */
   border-radius: 5px;
 }
 
-.unit{
+.unitQ {
   padding: 2px 5px !important;
   font-size: 0.9em;
   line-height: 1.2;
@@ -109,14 +108,15 @@ border-radius: 5px;
   border-radius: 5px;
 }
 
-.priceW{
-  min-width: 3em;
-  text-align: center;
-}
+/* .priceW,
+.unitQ { */
+/* min-width: 3em; */
+/* text-align: center; */
+/* } */
 
 .price {
   font-weight: bold;
-  min-width: 3em;
+  /* min-width: 3em; */
   border-radius: 5px;
 }
 
@@ -146,7 +146,7 @@ border-radius: 5px;
   color: rgb(47, 61, 61);
 }
 
-.dev-box{
+.dev-box {
   font-size: 0.9em;
   line-height: 1.2;
 }
@@ -156,28 +156,28 @@ border-radius: 5px;
   align-self: center;
 }
 
-.add-submit{
-font-size: 0.8em !important;
-align-self: center;
+.add-submit {
+  font-size: 0.8em !important;
+  align-self: center;
 }
 
 .formAdd {
-  color:midnightblue;
+  color: midnightblue;
   font-weight: 700;
 }
 
-.formWrapp{
+.formWrapp {
   overflow: hidden;
 }
 
-.visible-form{
+.visible-form {
   margin-top: 0px;
   opacity: 1;
   /* transition: margin-top 1s 0.5s linear, opacity 0.1s 0.5s linear; */
   transition: margin-top 1.8s 0.3s linear, opacity 0.5s linear;
 }
 
-.hidden-form{
+.hidden-form {
   opacity: 0;
   margin-top: -150%;
   transition: margin-top 2s 0.5s linear, opacity 1s 2s linear;
@@ -195,15 +195,15 @@ align-self: center;
   max-width: 80%;
 }
 
-.dialog-question{
-  color:rgb(39, 39, 41);
+.dialog-question {
+  color: rgb(39, 39, 41);
 }
 
 .confirm-age {
   color: darkblue;
 }
 
-.btn-close{
+.btn-close {
   text-align: right;
   margin-right: -50px;
   margin-bottom: 10px;
@@ -211,7 +211,7 @@ align-self: center;
   font-size: 0.8em !important;
 }
 
-.btn-close2{
+.btn-close2 {
   text-align: right;
   margin-right: -35px;
   margin-bottom: 15px;
@@ -219,15 +219,15 @@ align-self: center;
   font-size: 0.8em !important;
 }
 
-.close-btn{
+.close-btn {
   background-color: gainsboro !important;
 }
 
-.close-btn:hover{
+.close-btn:hover {
   background-color: rgb(194, 194, 194) !important;
 }
 
-.offer{
+.offer {
   text-align: center;
 }
 
@@ -257,22 +257,22 @@ align-self: center;
   color: rgb(22, 22, 46);
 }
 
-@media all and (min-width: 576px){
-  .unit{
-      width: 55px !important;
-  }
-
-  .prodW{
-      width: 65px !important;
-  }
-}
-
-@media all and (max-width: 575px){
+@media all and (min-width: 576px) {
   .unit {
-      width: 100% !important;
+    width: 55px !important;
   }
 
-  .prodW{
-    width: 90% !important;
+  .prodW {
+    width: 65px !important;
+  }
 }
+
+@media all and (max-width: 575px) {
+  .unit {
+    width: 100% !important;
+  }
+
+  .prodW {
+    width: 90% !important;
+  }
 }

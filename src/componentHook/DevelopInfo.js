@@ -57,7 +57,7 @@ function DevelopInfo() {
           HOOK tools such as useState, useEffect, useContext, useRef, useMemo,
           useCallback and useReducer. There are some additional libraries used
           here such as: @tippyjs/react, react-modal, react-toastify and
-          react-countup. All components have been optimized appropriately.
+          react-countup. All components have been optimized.
         </div>
       </Modal>
     </div>

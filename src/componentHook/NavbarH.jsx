@@ -11,7 +11,7 @@ import CountUp from "react-countup";
 const NavbarH = () => {
   const counterContext = useContext(CountContext);
   const [badgeClasses, setBadgeClasses] = useState(
-    "badge badge-pill  ml-1 badge-warning"
+    "badge badge-pill ml-1 badge-warning"
   );
 
   const priceContext = counterContext.totalPrice;

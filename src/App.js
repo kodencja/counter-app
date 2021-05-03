@@ -110,6 +110,8 @@ const durationTime = 1.6;
 
 function App() {
   const [countObjects, dispatch] = useReducer(reducer, initState);
+
+  // store the previous value of all prices and numbers of all products ("value")
   const prevTotalPrice = useRef(
     countObjects.reduce((prevC, nextC) => {
       return prevC + nextC.price * nextC.value;
@@ -123,10 +125,12 @@ function App() {
 
   // variable for tipps to be "abled" or "disabled"
   const [disable, setDisable] = useState(false);
+  // flag for modal opened or closed
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  // flag to check if the client is adult or not
   const [adultCounterClicked, setAdultCounterClicked] = useState({});
 
-  // store the previous value of all prices and nubers of all products ("value")
+  // store the previous value of all prices and numbers of all products ("value")
   useEffect(() => {
     prevTotalPrice.current = countObjects.reduce((prevC, nextC) => {
       return prevC + nextC.price * nextC.value;
@@ -182,7 +186,7 @@ function App() {
     [countObjects]
   );
 
-  const valueContextFrist = useMemo(() => {
+  const valueContextFirst = useMemo(() => {
     return {
       countState: countObjects,
       countDispatch: dispatch,
@@ -242,7 +246,7 @@ function App() {
           NO
         </button>
       </Modal>
-      <CountContext.Provider value={valueContextFrist}>
+      <CountContext.Provider value={valueContextFirst}>
         <NavbarH />
         <ModalTipsContext.Provider value={valueContextModal}>
           <CountersH />

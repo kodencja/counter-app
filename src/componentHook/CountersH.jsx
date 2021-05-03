@@ -82,7 +82,8 @@ function CountersH() {
 
   const handleTextOffer = useMemo(() => {
     return new Promise((resolve, reject) => {
-      if (reject.length > 1) reject(new Error("Error to get total price!"));
+      if (priceContext === undefined)
+        reject(new Error("Error to get total price!"));
       else {
         let txt;
         setTimeout(() => {
