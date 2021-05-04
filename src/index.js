@@ -6,20 +6,22 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavbarH from "./componentHook/NavbarH";
 import DevelopInfo from "./componentHook/DevelopInfo";
-import AddProd from "./componentHook/AddProd";
+import Add from "./componentHook/AddProd";
 import "./App.css";
 
 // const DevelopInfo = lazy(() => import("./componentHook/DevelopInfo"));
-// const AddProd = lazy(() => import("./componentHook/AddProd"));
+// const Add = lazy(() => import("./componentHook/AddProd"));
 
 ReactDOM.render(
   <React.StrictMode>
     <App>
       <NavbarH />
-      {/* <Suspense fallback={<p>Loading...</p>}> */}
-      <DevelopInfo />
-      {/* </Suspense> */}
-      <AddProd />
+      <Suspense fallback={<p>Loading...</p>}>
+        <Add />
+        <DevelopInfo />
+        {/* </Suspense> */}
+        {/* <Suspense fallback={<p>Loading...</p>}> */}
+      </Suspense>
     </App>
   </React.StrictMode>,
   document.getElementById("root")

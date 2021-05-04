@@ -103,7 +103,7 @@ function CountersH() {
 
   const getBtnTipsClass = useMemo(() => {
     // console.log("getBtnTipsClass Fn");
-    let classes = "btn text-center btn-sm ml-2 ";
+    let classes = "btn text-center btn-sm ml-2 my-3 ";
     classes += counterContext.disable === false ? "btn-light" : "btn-info";
     return classes;
   }, [counterContext.disable]);

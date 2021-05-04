@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useContext,
-} from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 // import { CountContext } from "../App";
 import Tippy from "@tippyjs/react";
 

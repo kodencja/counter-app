@@ -14,7 +14,6 @@ import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "tippy.js/dist/tippy.css";
 
-// const AddProd = lazy(() => import("./componentHook/AddProd"));
 const Adult = lazy(() => import("./componentHook/Adult"));
 
 export const CountContext = React.createContext();
@@ -199,7 +198,6 @@ function App({ children }) {
 
   return (
     <div className="App">
-      {/* <ErrorBoundary> */}
       <Suspense fallback={loading}>
         <Adult
           onModalIsOpen={modalIsOpen}
@@ -209,36 +207,25 @@ function App({ children }) {
           onAdultCounterClicked={adultCounterClicked}
         />
       </Suspense>
-      {/* </ErrorBoundary> */}
 
       <CountContext.Provider value={valueContextFirst}>
-        {/* <NavbarH /> */}
         {React.cloneElement(children[0], { counterContext: valueContextFirst })}
-        {/* {children[0].type.type.name === "NavbarH"
-          ? React.cloneElement(children, { counterContext: valueContextFirst })
-          : ""} */}
         <ModalTipsContext.Provider value={valueContextModal}>
           <CountersH />
         </ModalTipsContext.Provider>
         <Suspense fallback={loading}>
-          {/* <AddProd addPro={addProduct} /> */}
-          {React.cloneElement(children[2], {
+          {React.cloneElement(children[1].props.children[0], {
             onDisable: disable,
             addPro: addProduct,
           })}
         </Suspense>
-        {/* <Suspense fallback={loading}>
-          <DevelopInfo />
-        </Suspense> */}
-        {/* {children} */}
       </CountContext.Provider>
 
-      {React.cloneElement(children[1], { onDisable: disable })}
-      {/* {children.type.type.name === "DevelopInfo"
-        ? React.cloneElement(children, { onDisable: disable })
-        : ""} */}
+      {React.cloneElement(children[1].props.children[1], {
+        onDisable: disable,
+      })}
       <ToastContainer style={{ textAlign: "justify" }} limit={1} />
-      <footer className="text-center mx-auto my-1 footer">
+      <footer className="text-center mx-auto my-1 footer py-1">
         &copy; 2021 <i>by</i> <strong>codencja</strong>
       </footer>
     </div>
