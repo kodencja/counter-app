@@ -5,13 +5,17 @@ import React, {
   useCallback,
   useContext,
 } from "react";
-import { CountContext } from "../App";
+// import { CountContext } from "../App";
 import Tippy from "@tippyjs/react";
 
 const initProduct = { name: "", unit: "piece", price: 0, adult: false };
 
-function Add({ addPro }) {
-  const counterContext = useContext(CountContext);
+function areEqual(prevProps, nextProps) {
+  return prevProps.onDisable === nextProps.onDisable;
+}
+
+function Add({ onDisable, addPro }) {
+  // const counterContext = useContext(CountContext);
   const [product, setProduct] = useState(initProduct);
   const [addVisibility, setAddVisibility] = useState(false);
   const formRef = React.createRef();
@@ -31,7 +35,7 @@ function Add({ addPro }) {
     }
   }, [addVisibility]);
 
-  console.log("Add render!");
+  console.log("AddProd render!");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -90,7 +94,7 @@ function Add({ addPro }) {
     <div className="text-left bg-light">
       <Tippy
         content="Click to open add form. Use enter, tab key or mouse to jump between input fields"
-        disabled={counterContext.disable}
+        disabled={onDisable}
         placement="top-start"
         delay={100}
       >
@@ -201,4 +205,4 @@ function Add({ addPro }) {
   );
 }
 
-export default React.memo(Add);
+export default React.memo(Add, areEqual);

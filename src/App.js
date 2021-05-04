@@ -5,18 +5,17 @@ import React, {
   useReducer,
   useMemo,
   useCallback,
+  lazy,
+  Suspense,
 } from "react";
-import "./App.css";
+
 import CountersH from "./componentHook/CountersH";
-import NavbarH from "./componentHook/NavbarH";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "tippy.js/dist/tippy.css";
-import Modal from "react-modal";
-import AddProd from "./componentHook/AddProd";
-import DevelopInfo from "./componentHook/DevelopInfo";
 
-Modal.setAppElement("#root");
+// const AddProd = lazy(() => import("./componentHook/AddProd"));
+const Adult = lazy(() => import("./componentHook/Adult"));
 
 export const CountContext = React.createContext();
 export const ModalTipsContext = React.createContext();
@@ -108,7 +107,7 @@ const reducer = (state, action) => {
 // time for setTimeout in promises
 const durationTime = 1.6;
 
-function App() {
+function App({ children }) {
   const [countObjects, dispatch] = useReducer(reducer, initState);
 
   // store the previous value of all prices and numbers of all products ("value")
@@ -125,8 +124,10 @@ function App() {
 
   // variable for tipps to be "abled" or "disabled"
   const [disable, setDisable] = useState(false);
+
   // flag for modal opened or closed
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
   // flag to check if the client is adult or not
   const [adultCounterClicked, setAdultCounterClicked] = useState({});
 
@@ -141,6 +142,11 @@ function App() {
   }, [countObjects]);
 
   console.log("App render!");
+
+  useEffect(() => {
+    console.log(children);
+    // console.log(children.type.type.name);
+  }, []);
 
   const notify = () => {
     console.log("notify");
@@ -163,21 +169,6 @@ function App() {
       return c1 + c2.price * c2.value;
     }, 0);
   }, [countObjects]);
-
-  const handleModalAnswer = (e) => {
-    setModalIsOpen(false);
-    if (e.target.id === "yes") {
-      countObjects.forEach((counter) => {
-        if (counter.adult === true) {
-          dispatch({
-            type: "yesAdult",
-            counterNo: counter,
-            adultCounter: adultCounterClicked,
-          });
-        }
-      });
-    } else return false;
-  };
 
   const addProduct = useCallback(
     (productObj) => {
@@ -204,59 +195,51 @@ function App() {
     return { toastNotify: notify, setModalIsOpen };
   }, [countObjects]);
 
+  const loading = <p>Loading...</p>;
+
   return (
     <div className="App">
-      <Modal
-        className="dialog-box border border-warning text-center py-4 px-5"
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        shouldCloseOnOverlayClick={false}
-        style={{
-          overlay: { backgroundColor: "rgba(169, 169, 180, 0.733)" },
-          content: {
-            color: "crimson",
-            backgroundColor: "whitesmoke",
-            padding: "50px",
-          },
-        }}
-      >
-        <div className="btn-close">
-          <button
-            className="btn btn-sm btn-basic btn-alert border-dark font-weight-bold close-btn mx-2"
-            onClick={() => setModalIsOpen(false)}
-          >
-            X
-          </button>
-        </div>
-        <h4 className="bg-warning mb-3 p-1 h5">Adult Zone!</h4>
-        <h5 className="mb-4 confirm-age h6">Confirm your age!</h5>
-        <h4 className="dialog-question h5">Are you over 18?</h4>
-        <button
-          className="btn btn-primary btn-alert mr-5 mt-3"
-          id="yes"
-          onClick={handleModalAnswer}
-        >
-          YES
-        </button>
-        <button
-          className="btn btn-danger btn-alert mt-3"
-          id="no"
-          onClick={handleModalAnswer}
-        >
-          NO
-        </button>
-      </Modal>
+      {/* <ErrorBoundary> */}
+      <Suspense fallback={loading}>
+        <Adult
+          onModalIsOpen={modalIsOpen}
+          onSetModalIsOpen={setModalIsOpen}
+          onCountObjects={countObjects}
+          onDispatch={dispatch}
+          onAdultCounterClicked={adultCounterClicked}
+        />
+      </Suspense>
+      {/* </ErrorBoundary> */}
+
       <CountContext.Provider value={valueContextFirst}>
-        <NavbarH />
+        {/* <NavbarH /> */}
+        {React.cloneElement(children[0], { counterContext: valueContextFirst })}
+        {/* {children[0].type.type.name === "NavbarH"
+          ? React.cloneElement(children, { counterContext: valueContextFirst })
+          : ""} */}
         <ModalTipsContext.Provider value={valueContextModal}>
           <CountersH />
         </ModalTipsContext.Provider>
-        <AddProd addPro={addProduct} />
-        <DevelopInfo />
+        <Suspense fallback={loading}>
+          {/* <AddProd addPro={addProduct} /> */}
+          {React.cloneElement(children[2], {
+            onDisable: disable,
+            addPro: addProduct,
+          })}
+        </Suspense>
+        {/* <Suspense fallback={loading}>
+          <DevelopInfo />
+        </Suspense> */}
+        {/* {children} */}
       </CountContext.Provider>
+
+      {React.cloneElement(children[1], { onDisable: disable })}
+      {/* {children.type.type.name === "DevelopInfo"
+        ? React.cloneElement(children, { onDisable: disable })
+        : ""} */}
       <ToastContainer style={{ textAlign: "justify" }} limit={1} />
       <footer className="text-center mx-auto my-1 footer">
-        &copy; 2021 <i>by</i> codencja
+        &copy; 2021 <i>by</i> <strong>codencja</strong>
       </footer>
     </div>
   );

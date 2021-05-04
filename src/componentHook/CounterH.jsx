@@ -18,7 +18,7 @@ const CounterH = React.forwardRef((props, ref) => {
   const getBadgeClasses = useMemo(() => {
     // console.log("getBadgeClasses CounterH");
     let classes =
-      "badge-text mt-2 mt-md-0 mx-3 mx-sm-1 mx-md-1 mx-lg-0 mx-xl-2 ";
+      "mt-2 mb-1 mb-sm-0 mt-md-0 mx-3 mx-sm-1 mx-md-1 mx-lg-0 mx-xl-2 ";
     classes += singleCounter.value === 0 ? "bwarning" : "bprimary";
     return classes;
   }, [singleCounter.value]);
@@ -74,21 +74,17 @@ const CounterH = React.forwardRef((props, ref) => {
   };
 
   return (
-    <div className="mt-4 row mx-0 px-0" ref={ref}>
+    <div className="mt-4 row mx-0 px-0 align-items-start" ref={ref}>
       <div className="col-sm-4 col-lg-3 name-col text-center">
         <div className="sm-caps bgr1 mx-2 mb-1">Name:</div>
         <div className="fCol1 prodName">{singleCounter.name}</div>
       </div>
-
-      {/* <div className="w-100 d-md-none"></div> */}
       <div className="mt-sm-0 mt-3 col-md-2 col-sm-3 col-lg-2 text-center">
-        <div className="sm-caps bgr1 mx-2 mb-1">Unit:</div>
+        <div className="sm-caps bgr2 mx-2 mb-1">Unit:</div>
         <div className="fCol1 unitQ mb-sm-0">{singleCounter.unit}</div>
       </div>
-
-      {/* <div className="w-100 d-md-none"></div> */}
       <div className="mt-sm-0 mt-3 col-md-2 col-sm-3 col-lg-2 text-center">
-        <div className="sm-caps bgr1 mx-2 mb-1">Price:</div>
+        <div className="sm-caps bgr3 mx-2 mb-1">Price:</div>
         <div className="fCol2 price mb-sm-0">${singleCounter.price}</div>
       </div>
 

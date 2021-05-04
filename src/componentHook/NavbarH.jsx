@@ -5,11 +5,17 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
-import { CountContext } from "../App";
+// import { CountContext } from "../App";
 import CountUp from "react-countup";
 
-const NavbarH = () => {
-  const counterContext = useContext(CountContext);
+function areEqual(prevProps, nextProps) {
+  return (
+    prevProps.counterContext.countState === nextProps.counterContext.countState
+  );
+}
+
+function NavbarH({ counterContext }) {
+  // const counterContext = useContext(CountContext);
   const [badgeClasses, setBadgeClasses] = useState(
     "badge badge-pill ml-1 badge-warning"
   );
@@ -111,6 +117,7 @@ const NavbarH = () => {
       </a>
     </nav>
   );
-};
+}
 
-export default React.memo(NavbarH);
+export default React.memo(NavbarH, areEqual);
+// export default NavbarH;

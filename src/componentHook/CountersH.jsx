@@ -9,9 +9,7 @@ import React, {
 import Tippy from "@tippyjs/react";
 import CounterH from "./CounterH";
 import { CountContext } from "../App";
-import Modal from "react-modal";
-
-Modal.setAppElement("#root");
+import Danger from "./Danger";
 
 function CountersH() {
   const [textOffer, setTextOffer] = useState(
@@ -27,13 +25,14 @@ function CountersH() {
     </div>
   );
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const counterRef = useRef([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [counterToBeDeleted, setCounterToBeDeleted] = useState({});
   const counterContext = useContext(CountContext);
   const priceContext = counterContext.totalPrice;
   const prevTotalPrice = counterContext.prevWholePrice;
+
+  console.log("COUNTERSH render!");
 
   useEffect(() => {
     if (
@@ -41,21 +40,9 @@ function CountersH() {
       (priceContext > 500 && prevTotalPrice <= 500)
     ) {
       callTextOffer();
-      console.log("CountersH callTextOffer render!");
+      // console.log("CountersH callTextOffer render!");
     }
   }, [priceContext]);
-
-  useEffect(() => {
-    console.log("CountersH textOffer render!");
-  }, [textOffer]);
-
-  useEffect(() => {
-    console.log("CountersH counterContext render!");
-  }, [counterContext]);
-
-  useEffect(() => {
-    console.log("CountersH modalIsOpen render!");
-  }, [modalIsOpen]);
 
   // async function callTextOffer() {
   const callTextOffer = useCallback(async () => {
@@ -68,17 +55,6 @@ function CountersH() {
       counterRef.current.push(el);
     }
   }, []);
-
-  const handleModalDelete = (e) => {
-    console.log("handleModalDelete");
-    setModalIsOpen(false);
-    if (e.target.id === "yes") {
-      counterContext.countDispatch({
-        type: "delete",
-        counterNo: counterToBeDeleted,
-      });
-    } else return false;
-  };
 
   const handleTextOffer = useMemo(() => {
     return new Promise((resolve, reject) => {
@@ -148,51 +124,25 @@ function CountersH() {
     });
   }, [counterContext.countState]);
 
+  const handleModalDelete = (e) => {
+    // console.log("handleModalDelete");
+    setModalIsOpen(false);
+    if (e.target.id === "yes") {
+      counterContext.countDispatch({
+        type: "delete",
+        counterNo: counterToBeDeleted,
+      });
+    } else return false;
+  };
+
   return (
     <main className="main m-0 p-sm-2 row">
-      <Modal
-        className="dialog-box border border-warning text-center py-4 px-5"
-        isOpen={modalIsOpen}
-        onRequestClose={() => callSetModal(false)}
-        shouldCloseOnOverlayClick={false}
-        style={{
-          overlay: { backgroundColor: "rgba(169, 169, 180, 0.733)" },
-          content: {
-            color: "crimson",
-            backgroundColor: "whitesmoke",
-            padding: "30px",
-          },
-        }}
-      >
-        <div className="btn-close2">
-          <button
-            className="btn btn-sm btn-basic btn-alert close-btn border-dark font-weight-bold"
-            onClick={() => setModalIsOpen(false)}
-          >
-            X
-          </button>
-        </div>
-
-        <h4 className="bg-warning mb-3 p-1 h5">Danger Zone!</h4>
-        <h5 className="mb-4 confirm-age h6">Confirm deleting the product!</h5>
-        <h4 className="dialog-question text-center mx-auto h6">
-          Are you sure you want to delete the product from the list?
-        </h4>
-        <button
-          className="btn btn-danger btn-alert mr-5 mt-3"
-          id="yes"
-          onClick={handleModalDelete}
-        >
-          YES
-        </button>
-        <button
-          className="btn btn-primary btn-alert mt-3"
-          id="no"
-          onClick={handleModalDelete}
-        >
-          NO
-        </button>
-      </Modal>
+      <Danger
+        onCounterToBeDeleted={counterToBeDeleted}
+        onModalIsOpen={modalIsOpen}
+        onSetModalIsOpen={setModalIsOpen}
+        onHandleModalDelete={handleModalDelete}
+      />
 
       <div className="offer pt-2 px-1 px-md-2 col-12 col-md-10">
         <div className="h5 specialOffer">{textOffer} </div>
