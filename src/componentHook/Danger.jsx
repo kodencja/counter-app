@@ -36,11 +36,11 @@ function Danger(props) {
         </button>
       </div>
 
-      <h4 className="bg-warning mb-3 p-1 h5">Danger Zone!</h4>
-      <h5 className="mb-4 confirm-age h6">Confirm deleting the product!</h5>
-      <h4 className="dialog-question text-center mx-auto h6">
+      <p className="bg-warning mb-3 p-1 h5">Danger Zone!</p>
+      <p className="mb-4 confirm-age h6">Confirm deleting the product!</p>
+      <h5 className="dialog-question text-center mx-auto">
         Are you sure you want to delete the product from the list?
-      </h4>
+      </h5>
       <button
         className="btn btn-danger btn-alert mr-5 mt-3"
         id="yes"

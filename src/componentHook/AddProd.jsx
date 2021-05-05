@@ -32,8 +32,6 @@ function Add({ onDisable, addPro }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
-    console.log(e.target);
     addPro(product);
     setProduct(initProduct);
   };
@@ -189,6 +187,7 @@ function Add({ onDisable, addPro }) {
               </div>
             </div>
           </div>
+          <div className="w-100"></div>
           <div className="checkAnswer">{checkAnswer}</div>
           <div className="w-100"></div>
           <button

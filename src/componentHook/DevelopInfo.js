@@ -57,7 +57,7 @@ function DevelopInfo({ onDisable }) {
         </div>
 
         <h4 className="bg-info mb-3 p-1 h5">Webdeveloping basic information</h4>
-        <div className="dialog-question mx-auto dev-box">
+        <div className="mx-auto dev-box">
           This page was built in <b>REACT.JS</b> with functional components
           based on HOOK tools such as{" "}
           <b> useState, useEffect, useContext, useRef, useMemo, useCallback</b>{" "}

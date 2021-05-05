@@ -175,6 +175,8 @@ a:hover > .home-page-link {
 .dev-box {
   font-size: 0.9em;
   line-height: 1.2;
+  color: rgb(39, 39, 41);
+  text-align: justify;
 }
 
 .add-btn {
@@ -223,7 +225,7 @@ a:hover > .home-page-link {
 
 .dialog-question {
   color: rgb(39, 39, 41);
-  text-align: justify;
+  text-align: center;
 }
 
 .confirm-age {
