@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-// import { CountContext } from "../App";
 import Tippy from "@tippyjs/react";
 
 const initProduct = { name: "", unit: "piece", price: 0, adult: false };
@@ -9,8 +8,8 @@ function areEqual(prevProps, nextProps) {
 }
 
 function Add({ onDisable, addPro }) {
-  // const counterContext = useContext(CountContext);
   const [product, setProduct] = useState(initProduct);
+  const [checkAnswer, setCheckAnswer] = useState();
   const [addVisibility, setAddVisibility] = useState(false);
   const formRef = React.createRef();
   const inputRef = useRef([]);
@@ -33,6 +32,8 @@ function Add({ onDisable, addPro }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(e);
+    console.log(e.target);
     addPro(product);
     setProduct(initProduct);
   };
@@ -69,15 +70,22 @@ function Add({ onDisable, addPro }) {
   };
 
   const handleOnChange = (e) => {
-    let propName = e.target.value;
+    let propValue = e.target.value;
     if (e.target.name === "adult") {
       if (e.target.checked === true) {
-        propName = true;
+        propValue = true;
       } else {
-        propName = false;
+        propValue = false;
+      }
+    } else if (e.target.name === "price") {
+      if (propValue[0] <= 0) {
+        setCheckAnswer("The price cannot start with 0 number.");
+        return;
+      } else if (propValue[0] !== 0) {
+        setCheckAnswer("");
       }
     }
-    setProduct({ ...product, [e.target.name]: propName });
+    setProduct({ ...product, [e.target.name]: propValue });
   };
 
   const formStyle = addVisibility
@@ -100,12 +108,9 @@ function Add({ onDisable, addPro }) {
         </button>
       </Tippy>
 
-      {/* <div className="w-100"></div> */}
-      {/* <div className={"container " + wrappStyleForm}> */}
       <div className="container formWrapp">
         <form onSubmit={handleSubmit} className={formStyle} ref={formRef}>
           <div className="row mx-0">
-            {/* <div className="form-group col-md-12"> */}
             <div className="form-group col-md-4">
               <label htmlFor="name" className="label ml-md-3 mr-1">
                 Name:
@@ -156,7 +161,7 @@ function Add({ onDisable, addPro }) {
                 id="price"
                 value={product.price}
                 className="form-control"
-                min="0"
+                min="1"
                 max="10000"
                 required
                 placeholder="Price"
@@ -184,6 +189,7 @@ function Add({ onDisable, addPro }) {
               </div>
             </div>
           </div>
+          <div className="checkAnswer">{checkAnswer}</div>
           <div className="w-100"></div>
           <button
             name="submit"

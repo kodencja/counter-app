@@ -18,10 +18,6 @@
   width: 100% !important;
 }
 
-.row {
-  /* align-items: flex-start; */
-}
-
 .row:last-child {
   padding-bottom: 20px;
 }
@@ -32,6 +28,11 @@
 
 .badge-no-text {
   font-size: 0.85em;
+}
+
+.badge {
+  line-height: inherit;
+  font-size: 80%;
 }
 
 .bwarning {
@@ -54,21 +55,12 @@
   font-weight: bold;
 }
 
-.respMsg {
-  background-color: rgb(241, 241, 241);
-  text-align: center;
-  color: forestgreen;
-}
-
-.respBgr0 {
-  background-color: #ffc107;
-  color: black;
-  font-weight: 500;
-}
-.respBgrWhSal {
-  background-color: mediumseagreen;
-  color: white;
-  font-weight: 600;
+.checkAnswer {
+  font-size: 0.9rem;
+  margin-left: 15px;
+  margin-bottom: 10px;
+  text-align: left;
+  color: crimson;
 }
 
 .n1 {
@@ -96,7 +88,6 @@
   font-size: 1em;
   line-height: 1.2;
   font-weight: 700;
-  /* width: 8em; */
   border-radius: 5px;
 }
 

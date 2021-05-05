@@ -192,4 +192,4 @@ function CountersH() {
   );
 }
 
-export default React.memo(CountersH);
+export default CountersH;

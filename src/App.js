@@ -213,17 +213,18 @@ function App({ children }) {
         <ModalTipsContext.Provider value={valueContextModal}>
           <CountersH />
         </ModalTipsContext.Provider>
-        <Suspense fallback={loading}>
-          {React.cloneElement(children[1].props.children[0], {
+        <Suspense fallback={<p>Loading...</p>}>
+          {React.cloneElement(children[1], {
             onDisable: disable,
             addPro: addProduct,
           })}
         </Suspense>
       </CountContext.Provider>
-
-      {React.cloneElement(children[1].props.children[1], {
-        onDisable: disable,
-      })}
+      <Suspense fallback={<p>Loading...</p>}>
+        {React.cloneElement(children[2], {
+          onDisable: disable,
+        })}
+      </Suspense>
       <ToastContainer style={{ textAlign: "justify" }} limit={1} />
       <footer className="text-center mx-auto my-1 footer py-1">
         &copy; 2021 <i>by</i> <strong>codencja</strong>

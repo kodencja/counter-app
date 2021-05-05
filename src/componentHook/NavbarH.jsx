@@ -1,11 +1,4 @@
-import React, {
-  useContext,
-  useMemo,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
-// import { CountContext } from "../App";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import CountUp from "react-countup";
 
 function areEqual(prevProps, nextProps) {
@@ -15,7 +8,6 @@ function areEqual(prevProps, nextProps) {
 }
 
 function NavbarH({ counterContext }) {
-  // const counterContext = useContext(CountContext);
   const [badgeClasses, setBadgeClasses] = useState(
     "badge badge-pill ml-1 badge-warning"
   );
@@ -67,7 +59,6 @@ function NavbarH({ counterContext }) {
             }
           </span>
         </div>
-        {/* <div className="w-100 my-1"></div> */}
         <div className="row mb-2">
           <span>Number of&nbsp;</span>
           <span className="font-weight-bold n2">products&nbsp;</span>
@@ -90,8 +81,6 @@ function NavbarH({ counterContext }) {
             </CountUp>
           </span>
         </div>
-
-        {/* <div className="w-100 my-1"></div> */}
         <div className="row">
           <span className="font-weight-bold n3">Total price: </span>
           <span className="badge badge-pill badge-success ml-1 py-2">
@@ -120,4 +109,3 @@ function NavbarH({ counterContext }) {
 }
 
 export default React.memo(NavbarH, areEqual);
-// export default NavbarH;

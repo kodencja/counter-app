@@ -74,15 +74,16 @@ function DevelopInfo({ onDisable }) {
             Component's description:
           </p>{" "}
           <b>AddProd.jsx</b> is a component handling adding a new product to the
-          list; <b>Danger.jsx</b> is a component handling deleting a product
-          from the list; <b>Adult.jsx</b> is a component handling verification
-          whether the client is adult or not; <b>NavbarH.jsx</b> - a component
-          dealing with nav / menu issues; <b>CounterH.jsx</b> - a component of
-          one single product with it's properties such as 'name', 'unit',
-          'price' and total price along with control panel (add, minus or
-          delete); <b>CountersH.jsx</b> - a component embracing all products
-          with their relevant properties; <b>DevelopInfo.js</b> - a component
-          with 'Home Page Link' and basic coding information.
+          list (with only very basic verification of the input values);{" "}
+          <b>Danger.jsx</b> is a component handling deleting a product from the
+          list; <b>Adult.jsx</b> is a component handling verification whether
+          the client is adult or not; <b>NavbarH.jsx</b> - a component dealing
+          with nav / menu issues; <b>CounterH.jsx</b> - a component of one
+          single product with it's properties such as 'name', 'unit', 'price'
+          and total price along with control panel (add, minus or delete);{" "}
+          <b>CountersH.jsx</b> - a component embracing all products with their
+          relevant properties; <b>DevelopInfo.js</b> - a component with 'Home
+          Page Link' and basic coding information.
         </div>
       </Modal>
     </aside>
