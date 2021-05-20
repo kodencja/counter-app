@@ -35,13 +35,10 @@ function NavbarH({ counterContext }) {
       setBadgeClasses(classes);
     } else {
       return new Promise((resolve, reject) => {
-        if (reject.length > 1) reject(new Error("Error to get total price!"));
-        else {
-          setTimeout(() => {
-            setBadgeClasses(classes);
-            resolve(classes);
-          }, counterContext.durationTime * 550);
-        }
+        setTimeout(() => {
+          setBadgeClasses(classes);
+          resolve(classes);
+        }, counterContext.durationTime * 550);
       });
     }
   }, [counterContext.countState]);

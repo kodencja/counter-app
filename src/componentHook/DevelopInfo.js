@@ -18,7 +18,11 @@ function DevelopInfo({ onDisable }) {
 
   return (
     <aside className="down-buttons">
-      <a href="https://codencja.herokuapp.com/">
+      <a
+        href="https://codencja.herokuapp.com/"
+        target="_blank"
+        rel="noreferrer"
+      >
         <button type="link" className="btn-down home-page-link">
           Back to Home Page
         </button>
@@ -58,32 +62,44 @@ function DevelopInfo({ onDisable }) {
 
         <h4 className="bg-info mb-3 p-1 h5">Webdeveloping basic information</h4>
         <div className="mx-auto dev-box">
-          This page was built in <b>REACT.JS</b> with functional components
-          based on HOOK tools such as{" "}
-          <b> useState, useEffect, useContext, useRef, useMemo, useCallback</b>{" "}
-          and <b>useReducer</b>. There are some additional libraries used here
-          such as: <b>@tippyjs/react, react-modal, react-toastify</b> and
-          <b> react-countup</b>. All components have been optimized using{" "}
-          functions such as useMemo, useCallback or <b>React.memo()</b> and{" "}
-          <b>Same Element Reference Technique</b>, both enhanced by{" "}
-          <b>React.cloneElement()</b> and '<b>areEqual</b>' function that
-          compares previous and next values of a component's 'props', as well as{" "}
-          <b>lazy</b> and <b>Suspense</b> React's libraries. <br />
-          <br />
-          <p style={{ marginBottom: "5px", fontWeight: "bold" }}>
-            Component's description:
-          </p>{" "}
-          <b>AddProd.jsx</b> is a component handling adding a new product to the
-          list (with only very basic verification of the input values);{" "}
-          <b>Danger.jsx</b> is a component handling deleting a product from the
-          list; <b>Adult.jsx</b> is a component handling verification whether
-          the client is adult or not; <b>NavbarH.jsx</b> - a component dealing
-          with nav / menu issues; <b>CounterH.jsx</b> - a component of one
-          single product with it's properties such as 'name', 'unit', 'price'
-          and total price along with control panel (add, minus or delete);{" "}
-          <b>CountersH.jsx</b> - a component embracing all products with their
-          relevant properties; <b>DevelopInfo.js</b> - a component with 'Home
-          Page Link' and basic coding information.
+          <p>
+            This page was built in <b>REACT.JS</b> with functional components
+            based on HOOK tools such as{" "}
+            <b>
+              {" "}
+              useState, useEffect, useContext, useRef, useMemo, useCallback
+            </b>{" "}
+            and <b>useReducer</b>. There are some additional libraries used here
+            such as: <b>@tippyjs/react, react-modal, react-toastify</b> and
+            <b> react-countup</b>. All components have been optimized using{" "}
+            functions such as useMemo, useCallback or <b>React.memo()</b> and{" "}
+            <b>Same Element Reference Technique</b>, both enhanced by{" "}
+            <b>React.cloneElement()</b> and '<b>areEqual</b>' function that
+            compares previous and next values of a component's 'props', as well
+            as <b>lazy</b> and <b>Suspense</b> React's libraries. <br />
+            <br />
+            <p style={{ marginBottom: "5px", fontWeight: "bold" }}>
+              Component's description:
+            </p>{" "}
+            <b>AddProd.jsx</b> is a component handling adding a new product to
+            the list (with only very basic verification of the input values);{" "}
+            <b>Danger.jsx</b> is a component handling deleting a product from
+            the list; <b>Adult.jsx</b> is a component handling verification
+            whether the client is adult or not; <b>NavbarH.jsx</b> - a component
+            dealing with nav / menu issues; <b>CounterH.jsx</b> - a component of
+            one single product with it's properties such as 'name', 'unit',
+            'price' and total price along with control panel (add, minus or
+            delete); <b>CountersH.jsx</b> - a component embracing all products
+            with their relevant properties; <b>DevelopInfo.js</b> - a component
+            with 'Home Page Link' and basic coding information.
+          </p>
+          <a
+            href="https://github.com/kodencja/counter-app"
+            target="_blank"
+            rel="noreferrer"
+          >
+            See the code
+          </a>
         </div>
       </Modal>
     </aside>

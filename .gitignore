@@ -8,9 +8,6 @@
 # testing
 /coverage
 
-# production
-/build
-
 #copies
 /src/components_3
 /src/components_2

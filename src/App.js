@@ -227,7 +227,7 @@ function App({ children }) {
       </Suspense>
       <ToastContainer style={{ textAlign: "justify" }} limit={1} />
       <footer className="text-center mx-auto my-1 footer py-1">
-        &copy; 2021 <i>by</i> <strong>codencja</strong>
+        &copy; 2021 <i>by</i> <strong>Codencja</strong>
       </footer>
     </div>
   );

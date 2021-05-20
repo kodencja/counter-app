@@ -223,6 +223,16 @@ a:hover > .home-page-link {
   max-width: 80%;
 }
 
+.dev-box a {
+  color: darkslategrey;
+  font-weight: 700;
+  float: right;
+}
+
+.dev-box a:hover {
+  color: rgb(60, 100, 100);
+}
+
 .dialog-question {
   color: rgb(39, 39, 41);
   text-align: center;
